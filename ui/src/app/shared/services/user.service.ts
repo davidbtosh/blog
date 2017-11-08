@@ -38,7 +38,6 @@ export class UserService {
         err => this.purgeAuth()
       );
     } else {
-
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
     }
@@ -75,6 +74,15 @@ export class UserService {
 
   getCurrentUser(): User {
     return this.currentUserSubject.value;
+  }
+
+  update(user): Observable<User> {
+    return this.apiService.put('/user', { user })
+    .map(data => {
+      // Update the currentUser observable
+      this.currentUserSubject.next(data.user);
+      return data.user;
+    });
   }
 
 }
