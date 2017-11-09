@@ -10,7 +10,7 @@ import { ProfileModule } from './profile/profile.module';
 import { SettingsModule } from './settings/settings.module';
 import { ArticleModule } from './article/article.module';
 
-import { ApiService, UserService, FooterComponent, HeaderComponent, 
+import { ApiService, UserService, FooterComponent, HeaderComponent, CommentsService,
          JwtService, SharedModule, AuthGuard, ProfilesService, ArticlesService } from './shared';
 
 const rootRouting: ModuleWithProviders = RouterModule.forRoot([], { useHash: true });
@@ -38,6 +38,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([], { useHash: tru
     JwtService,
     ProfilesService,
     ArticlesService,
+    CommentsService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

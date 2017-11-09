@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import {
-  Article,
-  ArticlesService,
-  User,
-  UserService
-} from '../shared';
+import { Article, ArticlesService, User, Comment, CommentsService, UserService } from '../shared';
 
 @Component({
   selector: 'article-page',
@@ -17,12 +12,16 @@ export class ArticleComponent implements OnInit {
   article: Article;
   currentUser: User;
   canModify: boolean;
+  comments: Comment[];
+  commentControl = new FormControl();
+  commentFormErrors = {};
   isSubmitting = false;
   isDeleting = false;
 
   constructor(
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
+    private commentsService: CommentsService,
     private router: Router,
     private userService: UserService,
   ) { }
@@ -32,6 +31,7 @@ export class ArticleComponent implements OnInit {
     this.route.data.subscribe(
       (data: { article: Article }) => {
         this.article = data.article;
+        this.populateComments();
       }
     );
 
@@ -66,6 +66,40 @@ export class ArticleComponent implements OnInit {
       .subscribe(
         success => {
           this.router.navigateByUrl('/');
+        }
+      );
+  }
+
+  populateComments() {
+    this.commentsService.getAll(this.article.slug)
+      .subscribe(comments => this.comments = comments);
+  }
+
+  addComment() {
+    this.isSubmitting = true;
+    this.commentFormErrors = {};
+
+    let commentBody = this.commentControl.value;
+    this.commentsService
+      .add(this.article.slug, commentBody)
+      .subscribe(
+        comment => {
+          this.comments.unshift(comment);
+          this.commentControl.reset('');
+          this.isSubmitting = false;
+        },
+        errors => {
+          this.isSubmitting = false;
+          this.commentFormErrors = errors;
+        }
+      );
+  }
+
+  onDeleteComment(comment) {
+    this.commentsService.destroy(comment.id, this.article.slug)
+      .subscribe(
+        success => {
+          this.comments = this.comments.filter((item) => item !== comment);
         }
       );
   }

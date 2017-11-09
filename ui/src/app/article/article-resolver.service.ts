@@ -18,7 +18,6 @@ export class ArticleResolver implements Resolve<Article> {
   ): Observable<any> {
 
     return this.articlesService.get(route.params['slug'])
-           .catch((err) => this.router.navigateByUrl('/'));
-
+      .catch((err) => this.router.navigateByUrl('/'));
   }
 }

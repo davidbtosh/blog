@@ -70,13 +70,13 @@ export class EditorComponent implements OnInit {
 
     // post the changes
     this.articlesService
-    .save(this.article)
-    .subscribe(
-      article => this.router.navigateByUrl('/editor/' + article.slug),
-      err => {
-        this.errors = err;
-        this.isSubmitting = false;
-      }
-    );
+      .save(this.article)
+      .subscribe(
+        article => this.router.navigateByUrl('/article/' + article.slug),
+        err => {
+          this.errors = err;
+          this.isSubmitting = false;
+        }
+      );
   }
 }
