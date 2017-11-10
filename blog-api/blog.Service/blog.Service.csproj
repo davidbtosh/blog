@@ -4,4 +4,13 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blog.Common\blog.Common.csproj" />
+    <ProjectReference Include="..\blog.DataAccess\blog.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
